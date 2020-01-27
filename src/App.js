@@ -1,26 +1,44 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import LightNavbar from './components/navbar.component';
+import Footer from './components/footer.component';
+import FrontPage from './pages/front-page.page';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      mode:'student',
+      page:'front'
+    }
+  }
+  route = () => {
+    switch (this.state.page) {
+      case 'front':
+        return <FrontPage mode={this.state.mode} setMode={this.setMode}/>
+      default:
+        return <FrontPage mode={this.state.mode} setMode={this.setMode}/>
+    }
+  }
+  setMode = (modeName) =>{
+    this.setState({mode:modeName});
+  }
+  toggleMode = () => {
+    if (this.state.mode === 'student') {
+      this.setState({mode:'teacher'});
+    } else {
+      this.setState({mode:'student'});
+    }
+  }
+  render () {
+    return (
+      <div>
+        <LightNavbar toggleMode={this.toggleMode} mode={this.state.mode} />
+        {this.route()}
+        <Footer />
+      </div>
+    );
+  }
 }
 
 export default App;

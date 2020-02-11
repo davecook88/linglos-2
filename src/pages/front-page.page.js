@@ -6,11 +6,17 @@ import {
     Container,
     Button
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
-const ButtonsBlock = () => {
+const ButtonsBlock = (changePage) => {
+    // const clickHandler = (e) => {
+    //     changePage(e.target.id);
+    // }
     return (
         <div>
-            <Button color="primary" size="lg" outline block onClick={() => window.location.href = '/students'}>Irregular verbs</Button>
+            <Link to='/student'>
+                <Button color="primary" size="lg" outline block id='student'>Study now</Button>
+            </Link>
         </div>
     )
 }
@@ -36,6 +42,13 @@ const TeacherText = () => {
 
 
 class FrontPage extends React.Component {
+    constructor(props){
+        super(props);
+        this.test();
+    }
+    test() {
+        console.log(this);
+    }
     ModeSelector = (props) => {
         const inlineStyle = {
             cursor:'pointer'
@@ -84,7 +97,7 @@ class FrontPage extends React.Component {
                     </Row>   
                     <Row>
                         <Col md='4'>
-                            {ButtonsBlock()}
+                            {ButtonsBlock(this.props.changePage)}
                         </Col>
                         <Col md='8' className="text-right">
                             {this.props.mode === 'teacher' ? <TeacherText /> : <StudentText />}

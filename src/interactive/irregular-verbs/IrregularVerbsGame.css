@@ -1,0 +1,83 @@
+.Game {
+    min-width: 50%;
+    min-height: 50%;
+  }
+  .Game-header{
+    text-align: center;
+      color:#117a8b;
+      font-size: 1.5em;
+      max-width: 45em;
+      margin:auto;
+  }
+  .Board {
+      width:100%;
+      max-width: 62em;
+      flex-wrap: wrap;
+      margin:auto;
+  }
+  .SelectButton {
+      display: inline-flex;
+      font-size: 1em;
+      line-height: 1em;
+      margin: 0.5em;
+      padding:0.5em;
+      cursor: pointer;
+  }
+  .Timer {
+      display: inline-flex;
+      margin:0.5em;
+  }
+  .answered {
+      background: #117a8b;
+  }
+
+  .scene {
+      display: inline-flex;
+      width: 10em;
+      height: 6em;
+      perspective: 600px;
+      margin:1px
+  }
+  .select-div {
+      display: inline-block;
+      width:35%;
+  }
+  
+  .game-card {
+      width: 100%;
+      height: 100%;
+      transition: transform 1s;
+      transform-style: preserve-3d;
+      cursor: pointer;
+      border: 2px outset;
+      position: relative;
+  }
+  
+  .game-card.is-flipped {
+    transform: rotateY(180deg);
+  }
+  
+  .card__face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    line-height: 3em;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 2em;
+    backface-visibility: hidden;
+  }
+  
+  .card__face--front {
+      background-image:url(./playing-card.jpg);
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position-y: center;
+  
+  }
+  
+  .card__face--back {
+    background: #0a5c89;
+    transform: rotateY(180deg);
+  }

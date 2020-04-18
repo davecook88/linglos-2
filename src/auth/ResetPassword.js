@@ -1,31 +1,21 @@
 import React, { Component } from 'react'
-import { Col, Container, Row, Form, Input, Label, Button } from 'reactstrap';
+import { Alert, Col, Container, Row, Form, Input, Label, Button } from 'reactstrap';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {registerUser} from '../../src/actions/authActions';
+import {resetPassword} from '../../src/actions/authActions';
 import classnames from 'classnames';
 
-class Register extends Component {
+class ResetPassword extends Component {
     constructor(props){
+        console.log(props);
         super(props);
-        this.state = {
-            name:'',
-            email:'',
-            password:'',
-            password2:'',
-            errors:{}
-        };
+        this.state = props.match.params;
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         
     }
 
-    componentDidUpdate(prevProps, prevState){
-        if (this.props.auth.isAuthenticated) {
-            this.props.history.push("/dashboard") //reroute on successful login
-        }
-    }
 
     onChange(e) {
         this.setState({[e.target.id]:e.target.value});
@@ -34,15 +24,20 @@ class Register extends Component {
     onSubmit(e) {
         e.preventDefault();
 
-        const newUser = {
-            name:this.state.name,
+        const user = {
             email:this.state.email,
             password:this.state.password,
-            password2:this.state.password2
+            password2:this.state.password2,
+            encodedToken: this.state.token
         };
-        console.log(this.props.registerUser);
-        this.props.registerUser(newUser,this.props.history);
-        console.log(newUser);
+        this.props.resetPassword(user, (res) => {
+            console.log(res);
+            if (!res.data.errors) {
+                this.props.history.push('/dashboard');
+            } else {
+                console.log(res);
+            }
+        });
     }
 
     
@@ -55,22 +50,9 @@ class Register extends Component {
                     <Col s={{size:8, offset: 2}}>
                         <Link to="/" className="btn">Back to home</Link>
                         <Col s="12">
-                            <h4>Register</h4>
-                            <p>Already have an account? <Link to="/login">Log in</Link></p>
+                            <h4>Reset your password</h4>
                         </Col>
                         <Form noValidate onSubmit={this.onSubmit}>
-                            <Col s='12'>
-                                <Input 
-                                    onChange={this.onChange}
-                                    value={this.state.name}
-                                    error={errors.name}
-                                    id="name"
-                                    type="text"
-                                    className={classnames('',{ invalid:errors.name })}
-                                />
-                                <Label for="name">Name</Label>
-                                <span className="red-text">{errors.name}</span>
-                            </Col>
                             <Col s='12'>
                                 <Input 
                                     onChange={this.onChange}
@@ -110,6 +92,11 @@ class Register extends Component {
                             <Col>
                                 <Button className="btn" type="submit">Sign Up</Button>
                             </Col>
+                            <Row>
+                                <Col>
+                                    {this.props.errors.status ? <Alert color="danger">{this.props.errors.status}</Alert> : null}
+                                </Col>
+                            </Row>
                         </Form>
                     </Col>
                 </Row>
@@ -124,13 +111,12 @@ const mapStateToProps = state => ({
     errors:state.errors
 })
 
-Register.propTypes = {
-    registerUser: PropTypes.func.isRequired,
+ResetPassword.propTypes = {
     auth: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired
 }
 
 export default connect(
     mapStateToProps,
-    { registerUser }
-) (withRouter(Register));
+    { resetPassword }
+) (withRouter(ResetPassword));
